@@ -10,7 +10,7 @@ Run `python3 -m http.server 8000` in this folder and visit `http://localhost:800
 
 1. On GitHub create a new public repository called `TriageX` (or choose your own name).
 2. Upload `index.html`, `styles.css` and `app.js` to the root of its default branch. Do not upload API keys.
-3. Open the repository's Settings → Pages. Under Build and deployment choose Deploy from a branch, select `main` and `/ (root)`, and save.
+3. Open the repository's Settings → Pages. Under Build and deployment choose **GitHub Actions**. The included workflow deploys on each push to `main`.
 4. Wait for GitHub Pages to show the published URL. Open it in Safari on your iPhone; optionally use Share → Add to Home Screen.
 5. Open Settings → Connections and enter your provider endpoint and API key on each device.
 
@@ -19,8 +19,8 @@ GitHub Actions can build and publish static files, but does not run a permanent 
 ## What works and limitations
 
 - OpenAI-compatible non-streaming chat completions using a custom base URL and key; providers must support browser CORS. Some models require provider-specific API formats or options and will not work through this adapter.
-- Standard, Vercel Decisions API predicate questions and Hybrid routing, with optional Tavily or Exa search. In Hybrid, switch Web on to allow the decision model to search. Search results are untrusted data and providers' CORS policies may block direct use. Firecrawl key is stored for a future integration; Firecrawl scraping is not yet implemented.
-- Optional two-model side-by-side comparison. The first successful response becomes the continuation context. No independent follow-up branches for each model yet.
+- Standard, Vercel Decisions API predicate/choice/score questions with shared context, and Hybrid routing, with optional Tavily or Exa search. In Hybrid, switch Web on to allow the decision model to search. Search results are untrusted data and providers' CORS policies may block direct use. Firecrawl key is stored for a future integration; Firecrawl scraping is not yet implemented.
+- Optional two-model side-by-side comparison, configured from the comparison bar. Decision comparisons need two decision-model IDs. The first successful response becomes the continuation context. No independent follow-up branches for each model yet.
 - Flex requests send the gateway service-tier option on Vercel and `service_tier: flex` to other providers; provider support and actual serving tier vary. Ultrafast requests are restricted to Vercel's documented GPT 6 Astra and 6.1 Sol route. Batch is explicitly unavailable; it is asynchronous and must not silently be sent as an interactive request. Gemini 4 Carbon can be selected but actual model/tier availability depends on the provider; it is not a claim that Vercel supports Gemini Batch.
 - Deepgram Voice Agent connects via a temporary token and streams microphone audio and audio responses, when token grant permits browser access and your account supports the selected agent configuration. This uses Deepgram's own hosted think provider, not the selected chat model. Its billing is separate. If a browser blocks the token request, a secure backend token broker is needed. Voice requires real-device testing.
 - Text/code attachments and images are sent through OpenAI-compatible content blocks; model capabilities vary. PDFs and other binary files are not currently supported.
